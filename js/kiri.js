@@ -1965,7 +1965,7 @@ self.kiri.license = exports.LICENSE;
         hideDialog();
         if (!MODES[mode]) {
             DBUG.log("invalid mode: "+mode);
-            mode = 'CAM'; // changed from FDM
+            mode = 'FDM';
         }
         settings.mode = mode;
         // restore cached device profile for this mode
@@ -2014,13 +2014,13 @@ self.kiri.license = exports.LICENSE;
             editTools = null,
             ROT = Math.PI/2,
             ROT5 = ROT / 9,
-            ALL = [MODES.CAM], // removed MODES.FDM, MODES.LASER,
+            ALL = [MODES.FDM, MODES.LASER, MODES.CAM],
             CAM = [MODES.CAM],
-            // FDM = [MODES.FDM],
-            // FDM_CAM = [MODES.CAM,MODES.FDM],
-            // FDM_LASER = [MODES.LASER,MODES.FDM],
-            CAM_LASER = [MODES.LASER,MODES.CAM];
-            // LASER = [MODES.LASER];
+            FDM = [MODES.FDM],
+            FDM_CAM = [MODES.CAM,MODES.FDM],
+            FDM_LASER = [MODES.LASER,MODES.FDM],
+            CAM_LASER = [MODES.LASER,MODES.CAM],
+            LASER = [MODES.LASER];
 
         WIN.addEventListener("resize", onWindowResize);
 
@@ -2057,26 +2057,26 @@ self.kiri.license = exports.LICENSE;
 
             device: UC.newGroup("device", $('device')),
             deviceName: UC.newInput("name", {size:20}),
-            // setDeviceFilament: UC.newInput("filament", {title:"diameter in millimeters", convert:UC.toFloat, modes:FDM}),
-            // setDeviceNozzle: UC.newInput("nozzle", {title:"diameter in millimeters", convert:UC.toFloat, modes:FDM}),
+            setDeviceFilament: UC.newInput("filament", {title:"diameter in millimeters", convert:UC.toFloat, modes:FDM}),
+            setDeviceNozzle: UC.newInput("nozzle", {title:"diameter in millimeters", convert:UC.toFloat, modes:FDM}),
             setDeviceWidth: UC.newInput("bed width", {title:"millimeters", convert:UC.toInt}),
             setDeviceDepth: UC.newInput("bed depth", {title:"millimeters", convert:UC.toInt}),
-            // setDeviceHeight: UC.newInput("max height", {title:"max build height\nin millimeters", convert:UC.toInt, modes:FDM}),
+            setDeviceHeight: UC.newInput("max height", {title:"max build height\nin millimeters", convert:UC.toInt, modes:FDM}),
             setDeviceMaxSpindle: UC.newInput("max spindle rpm", {title:"max spindle speed\n0 to disable", convert:UC.toInt, modes:CAM}),
             setDeviceExtrusion: UC.newBoolean("extrusion absolute", onBooleanClick, {title:"extrusion moves absolute"}),
             setDeviceOrigin: UC.newBoolean("origin center", onBooleanClick, {title:"bed origin center"}),
             setDeviceOriginTop: UC.newBoolean("origin top", onBooleanClick, {title:"part z origin top", modes:CAM}),
 
             setDevice: UC.newGroup("gcode", $('device')),
-            // setDeviceFan: UC.newInput("fan power", {title:"set cooling fan power", modes:FDM, size:15}),
-            // setDeviceTrack: UC.newInput("progress", {title:"set progress meter (makerbot)", modes:FDM, size:15}),
+            setDeviceFan: UC.newInput("fan power", {title:"set cooling fan power", modes:FDM, size:15}),
+            setDeviceTrack: UC.newInput("progress", {title:"set progress meter (makerbot)", modes:FDM, size:15}),
             setDeviceToken: UC.newBoolean("token spacing", null, {title:"gcode token spacing", modes:CAM}),
             setDeviceStrip: UC.newBoolean("strip comments", null, {title:"strip gcode comments", modes:CAM}),
             setDeviceFExt: UC.newInput("file ext", {title:"file name exension", modes:CAM, size:5}),
             setDeviceDwell: UC.newInput("dwell", {title:"gcode dwell script", modes:CAM, size:14, height:2}),
             setDeviceChange: UC.newInput("tool change", {title:"tool change script", modes:CAM, size:14, height:2}),
-            // setDevicePre: UC.newInput("header", {title:"gcode header script", modes:FDM_CAM, size:14, height:3}),
-            // setDevicePost: UC.newInput("footer", {title:"gcode footer script", modes:FDM_CAM, size:14, height:3}),
+            setDevicePre: UC.newInput("header", {title:"gcode header script", modes:FDM_CAM, size:14, height:3}),
+            setDevicePost: UC.newInput("footer", {title:"gcode footer script", modes:FDM_CAM, size:14, height:3}),
 
             tools: $('tools'),
             toolsSave: $('tools-save'),
@@ -2120,29 +2120,26 @@ self.kiri.license = exports.LICENSE;
 
             mode: UC.newGroup('mode', assets),
             modeTable: UC.newTableRow([
-                // [
-                //     UI.modeFDM =
-                //     UC.newButton("FDM Printing", function() { setMode('FDM',null,updatePlatformSize) }),
-                // ],[
-                //     UI.modeLASER =
-                //     UC.newButton("Laser Cutting", function() { setMode('LASER',null,updatePlatformSize) }),
-                // ],
                 [
+                    UI.modeFDM =
+                    UC.newButton("FDM Printing", function() { setMode('FDM',null,updatePlatformSize) }),
+                ],[
+                    UI.modeLASER =
+                    UC.newButton("Laser Cutting", function() { setMode('LASER',null,updatePlatformSize) }),
+                ],[
                     UI.modeCAM =
                     UC.newButton("CNC Milling",   function() { setMode('CAM',null,updatePlatformSize) }, {id:"modeCAM"}),
                 ]
             ]),
             system: UC.newGroup('setup'),
             sysTable: UC.newTableRow([
-                // [
-                //     UI.setupDevices =
-                //     UC.newButton("Devices", showDevices, {modes:FDM_CAM})
-                // ],
                 [
+                    UI.setupDevices =
+                    UC.newButton("Devices", showDevices, {modes:FDM_CAM})
+                ],[
                     UI.setupTools =
                     UC.newButton('Tools',   showTools, {modes:CAM}),
-                ],
-                [
+                ],[
                     UI.helpButton =
                     UC.newButton("Help",    showHelp)
                 ]
@@ -2195,18 +2192,18 @@ self.kiri.license = exports.LICENSE;
             ]]),
 
             layers: UC.setGroup($("layers")),
-            // layerOutline: UC.newBoolean("outline", onBooleanClick, {modes:LOCAL ? ALL : FDM_LASER}),
-            // layerTrace: UC.newBoolean("trace", onBooleanClick, {modes:FDM_LASER}),
+            layerOutline: UC.newBoolean("outline", onBooleanClick, {modes:LOCAL ? ALL : FDM_LASER}),
+            layerTrace: UC.newBoolean("trace", onBooleanClick, {modes:FDM_LASER}),
             layerFacing: UC.newBoolean("facing", onBooleanClick, {modes:CAM}),
             layerRough: UC.newBoolean("roughing", onBooleanClick, {modes:CAM}),
             layerFinish: UC.newBoolean("finishing", onBooleanClick, {modes:CAM}),
             layerFinishX: UC.newBoolean("finish x", onBooleanClick, {modes:CAM}),
             layerFinishY: UC.newBoolean("finish y", onBooleanClick, {modes:CAM}),
-            // layerDelta: UC.newBoolean("delta", onBooleanClick, {modes:FDM}),
-            // layerSolid: UC.newBoolean("solids", onBooleanClick, {modes:FDM}),
-            // layerFill: UC.newBoolean("solid fill", onBooleanClick, {modes:FDM}),
-            // layerSparse: UC.newBoolean("sparse fill", onBooleanClick, {modes:FDM}),
-            // layerSupport: UC.newBoolean("support", onBooleanClick, {modes:FDM}),
+            layerDelta: UC.newBoolean("delta", onBooleanClick, {modes:FDM}),
+            layerSolid: UC.newBoolean("solids", onBooleanClick, {modes:FDM}),
+            layerFill: UC.newBoolean("solid fill", onBooleanClick, {modes:FDM}),
+            layerSparse: UC.newBoolean("sparse fill", onBooleanClick, {modes:FDM}),
+            layerSupport: UC.newBoolean("support", onBooleanClick, {modes:FDM}),
             layerPrint: UC.newBoolean("print", onBooleanClick),
             layerDebug: UC.newBoolean("debug", onBooleanClick, {hide:!LOCAL}),
 
@@ -2220,30 +2217,30 @@ self.kiri.license = exports.LICENSE;
                 ]
             ]),
 
-            // platform: UC.newGroup("build area", control, {modes:LASER}),
-            // bedWidth: UC.newInput("width", {title:"millimeters", convert:UC.toInt, modes:LASER}),
-            // bedDepth: UC.newInput("depth", {title:"millimeters", convert:UC.toInt, modes:LASER}),
+            platform: UC.newGroup("build area", control, {modes:LASER}),
+            bedWidth: UC.newInput("width", {title:"millimeters", convert:UC.toInt, modes:LASER}),
+            bedDepth: UC.newInput("depth", {title:"millimeters", convert:UC.toInt, modes:LASER}),
 
-            // process: UC.newGroup("process", control, {modes:FDM_LASER}),
+            process: UC.newGroup("process", control, {modes:FDM_LASER}),
             processName: UC.newInput("name", {modes:[]}),
 
             // 3d print
-            // sliceHeight: UC.newInput("slice height", {title:"millimeters", convert:UC.toFloat, modes:FDM}),
-            // sliceShells: UC.newInput("shell count", {convert:UC.toInt, modes:FDM}),
-            // sliceShellSpacing: UC.newInput("shell spacing", {title:"as a percentage of nozzle width\n< 1.0 causes shell overlap\nrecommended 0.85 - 1.0", convert:UC.toFloat, bound:UC.bound(0.5,1.0), modes:FDM}),
-            // sliceFillOverlap: UC.newInput("fill overlap", {title:"overlap with shell\nas % of nozzle width\nhigher bonds better\n0.0 - 1.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
-            // sliceFillSpacing: UC.newInput("fill spacing", {title:"as a percentage of nozzle width\n< 1.0 causes fill overlap\nrecommended 0.85 - 1.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
-            // sliceFillAngle: UC.newInput("fill angle", {title:"base angle in degrees", convert:UC.toFloat, modes:FDM}),
-            // sliceFillSparse: UC.newInput("infill %", {title:"for solid layers\n0.0 - 1.0", convert:UC.toFloat, bound:UC.bound(0.0,1.0), modes:FDM}),
-            // sliceSolidMinArea: UC.newInput("solid area", {title:"minimum area (cm^2)\nrequired to keep solid\nmust be > 0.1", convert:UC.toFloat, modes:FDM}),
-            // sliceSolidLayers: UC.newInput("solid layers", {title:"solid fill projections\nbased on infill deltas", convert:UC.toInt, modes:FDM}),
-            // sliceBottomLayers: UC.newInput("base layers", {title:"base solid layers", convert:UC.toInt, modes:FDM}),
-            // sliceTopLayers: UC.newInput("top layers", {title:"top solid layers", convert:UC.toInt, modes:FDM}),
-            // sliceVase: UC.newBoolean("vase mode", onBooleanClick, {modes:FDM}),
+            sliceHeight: UC.newInput("slice height", {title:"millimeters", convert:UC.toFloat, modes:FDM}),
+            sliceShells: UC.newInput("shell count", {convert:UC.toInt, modes:FDM}),
+            sliceShellSpacing: UC.newInput("shell spacing", {title:"as a percentage of nozzle width\n< 1.0 causes shell overlap\nrecommended 0.85 - 1.0", convert:UC.toFloat, bound:UC.bound(0.5,1.0), modes:FDM}),
+            sliceFillOverlap: UC.newInput("fill overlap", {title:"overlap with shell\nas % of nozzle width\nhigher bonds better\n0.0 - 1.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
+            sliceFillSpacing: UC.newInput("fill spacing", {title:"as a percentage of nozzle width\n< 1.0 causes fill overlap\nrecommended 0.85 - 1.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
+            sliceFillAngle: UC.newInput("fill angle", {title:"base angle in degrees", convert:UC.toFloat, modes:FDM}),
+            sliceFillSparse: UC.newInput("infill %", {title:"for solid layers\n0.0 - 1.0", convert:UC.toFloat, bound:UC.bound(0.0,1.0), modes:FDM}),
+            sliceSolidMinArea: UC.newInput("solid area", {title:"minimum area (cm^2)\nrequired to keep solid\nmust be > 0.1", convert:UC.toFloat, modes:FDM}),
+            sliceSolidLayers: UC.newInput("solid layers", {title:"solid fill projections\nbased on infill deltas", convert:UC.toInt, modes:FDM}),
+            sliceBottomLayers: UC.newInput("base layers", {title:"base solid layers", convert:UC.toInt, modes:FDM}),
+            sliceTopLayers: UC.newInput("top layers", {title:"top solid layers", convert:UC.toInt, modes:FDM}),
+            sliceVase: UC.newBoolean("vase mode", onBooleanClick, {modes:FDM}),
 
-            // // laser
-            // laserOffset: UC.newInput("cut offset", {title:"millimeters\nadjust for beam width", convert:UC.toFloat, modes:LASER}),
-            // laserSliceHeight: UC.newInput("layer height", {title:"millimeters\n0 = auto/detect", convert:UC.toFloat, modes:LASER}),
+            // laser
+            laserOffset: UC.newInput("cut offset", {title:"millimeters\nadjust for beam width", convert:UC.toFloat, modes:LASER}),
+            laserSliceHeight: UC.newInput("layer height", {title:"millimeters\n0 = auto/detect", convert:UC.toFloat, modes:LASER}),
 
             // cam
             roughing: UC.newGroup("roughing", null, {modes:CAM}),
@@ -2286,19 +2283,19 @@ self.kiri.license = exports.LICENSE;
             camTabsHeight: UC.newInput("height", {title:"height in millimeters\nfrom part bottom", convert:UC.toFloat, bound:UC.bound(1,100), modes:CAM}),
             camTabsOn: UC.newBoolean("enable", onBooleanClick, {title:"enable or disable tabs\ntab generation skipped when\npocket only mode enabled", modes:CAM}),
 
-            // output: UC.newGroup("output"),
-            // outputTileSpacing: UC.newInput("spacing", {title:"millimeters\ndistance between layer output", convert:UC.toInt, modes:LASER}),
-            // outputTileScaling: UC.newInput("scaling", {title:"multiplier (0.1 to 100)", convert:UC.toInt, bound:UC.bound(0.1,100), modes:LASER}),
-            // outputLaserPower: UC.newInput("power", {title:"0 - 100 %", convert:UC.toInt, bound:UC.bound(1,100), modes:LASER}),
-            // outputLaserSpeed: UC.newInput("speed", {title:"millimeters / minute", convert:UC.toInt, modes:LASER}),
+            output: UC.newGroup("output"),
+            outputTileSpacing: UC.newInput("spacing", {title:"millimeters\ndistance between layer output", convert:UC.toInt, modes:LASER}),
+            outputTileScaling: UC.newInput("scaling", {title:"multiplier (0.1 to 100)", convert:UC.toInt, bound:UC.bound(0.1,100), modes:LASER}),
+            outputLaserPower: UC.newInput("power", {title:"0 - 100 %", convert:UC.toInt, bound:UC.bound(1,100), modes:LASER}),
+            outputLaserSpeed: UC.newInput("speed", {title:"millimeters / minute", convert:UC.toInt, modes:LASER}),
 
-            // outputBedTemp: UC.newInput("bed temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
-            // outputTemp: UC.newInput("nozzle temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
-            // outputFeedrate: UC.newInput("print speed", {title:"print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
-            // outputSeekrate: UC.newInput("move speed", {title:"non-print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
-            // // outputShellSpeed: UC.newInput("shell speed", {title:"speed multiplier\n0.1 - 2.0", convert:UC.toFloat, bound:UC.bound(0.1,2.0), modes:FDM}),
-            // outputShellMult: UC.newInput("shell factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
-            // outputFillMult: UC.newInput("fill factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
+            outputBedTemp: UC.newInput("bed temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
+            outputTemp: UC.newInput("nozzle temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
+            outputFeedrate: UC.newInput("print speed", {title:"print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
+            outputSeekrate: UC.newInput("move speed", {title:"non-print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
+            // outputShellSpeed: UC.newInput("shell speed", {title:"speed multiplier\n0.1 - 2.0", convert:UC.toFloat, bound:UC.bound(0.1,2.0), modes:FDM}),
+            outputShellMult: UC.newInput("shell factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
+            outputFillMult: UC.newInput("fill factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
 
             // cam
             camTolerance: UC.newInput("tolerance", {title:"surface precision\nin millimeters", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:CAM}),
@@ -2318,27 +2315,27 @@ self.kiri.license = exports.LICENSE;
             outputOriginCenter: UC.newBoolean("origin center", onBooleanClick, {modes:CAM_LASER}),
             camOriginTop: UC.newBoolean("origin top", onBooleanClick, {modes:CAM}),
 
-            // support: UC.newGroup("supports", null, {modes:FDM}),
-            // sliceSupportDensity: UC.newInput("density", {title:"0.0 - 1.0\nrecommended 0.15\n0 to disable", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:FDM}),
-            // sliceSupportSize: UC.newInput("pillar size", {title:"width in millimeters", bound:UC.bound(1.0,200.0), convert:UC.toFloat, modes:FDM}),
-            // sliceSupportOffset: UC.newInput("part offset", {title:"millimeters\noffset from part", bound:UC.bound(0.0,200.0), convert:UC.toFloat, modes:FDM}),
-            // sliceSupportSpan: UC.newInput("max bridge", {title:"span length that\ntriggers support\nin millimeters", bound:UC.bound(0.0,200.0), convert:UC.toFloat, modes:FDM}),
-            // sliceSupportArea: UC.newInput("min area", {title:"min area for a\nsupport column\nin millimeters", bound:UC.bound(0.1,200.0), convert:UC.toFloat, modes:FDM}),
-            // sliceSupportExtra: UC.newInput("expand", {title:"expand support area\nbeyond part boundary\nin millimeters", bound:UC.bound(0.0,200.0), convert:UC.toFloat, modes:FDM}),
-            // sliceSupportEnable: UC.newBoolean("enable", onBooleanClick, {modes:FDM}),
+            support: UC.newGroup("supports", null, {modes:FDM}),
+            sliceSupportDensity: UC.newInput("density", {title:"0.0 - 1.0\nrecommended 0.15\n0 to disable", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:FDM}),
+            sliceSupportSize: UC.newInput("pillar size", {title:"width in millimeters", bound:UC.bound(1.0,200.0), convert:UC.toFloat, modes:FDM}),
+            sliceSupportOffset: UC.newInput("part offset", {title:"millimeters\noffset from part", bound:UC.bound(0.0,200.0), convert:UC.toFloat, modes:FDM}),
+            sliceSupportSpan: UC.newInput("max bridge", {title:"span length that\ntriggers support\nin millimeters", bound:UC.bound(0.0,200.0), convert:UC.toFloat, modes:FDM}),
+            sliceSupportArea: UC.newInput("min area", {title:"min area for a\nsupport column\nin millimeters", bound:UC.bound(0.1,200.0), convert:UC.toFloat, modes:FDM}),
+            sliceSupportExtra: UC.newInput("expand", {title:"expand support area\nbeyond part boundary\nin millimeters", bound:UC.bound(0.0,200.0), convert:UC.toFloat, modes:FDM}),
+            sliceSupportEnable: UC.newBoolean("enable", onBooleanClick, {modes:FDM}),
 
-            // firstLayer: UC.newGroup("first layer", null, {modes:FDM}),
-            // firstLayerHeight: UC.newInput("height factor", {title:"0.5 - 2.5\nmultiplier on slice height\nshould be no more\nthan 80% nozzle diam", convert:UC.toFloat, modes:FDM}),
-            // firstLayerSpeed: UC.newInput("speed factor", {title:"0.1 - 1.0\nmultiplier on print speed", convert:UC.toFloat, modes:FDM}),
-            // outputBrimCount: UC.newInput("skirt count", {title:"number of skirts", convert:UC.toInt, modes:FDM}),
-            // outputBrimOffset: UC.newInput("skirt offset", {title:"millimeters", convert:UC.toFloat, modes:FDM}),
+            firstLayer: UC.newGroup("first layer", null, {modes:FDM}),
+            firstLayerHeight: UC.newInput("height factor", {title:"0.5 - 2.5\nmultiplier on slice height\nshould be no more\nthan 80% nozzle diam", convert:UC.toFloat, modes:FDM}),
+            firstLayerSpeed: UC.newInput("speed factor", {title:"0.1 - 1.0\nmultiplier on print speed", convert:UC.toFloat, modes:FDM}),
+            outputBrimCount: UC.newInput("skirt count", {title:"number of skirts", convert:UC.toInt, modes:FDM}),
+            outputBrimOffset: UC.newInput("skirt offset", {title:"millimeters", convert:UC.toFloat, modes:FDM}),
 
-            // advanced: UC.newGroup("advanced", null, {modes:FDM}),
-            // outputRetractOver: UC.newInput("retract over", {title:"retract filament for\nnon-print moves\nover this distance\n0 = disable", convert:UC.toFloat, modes:FDM}),
-            // outputRetractDist: UC.newInput("retract dist", {title:"amount to retract filament", convert:UC.toFloat, modes:FDM}),
-            // outputRetractSpeed: UC.newInput("retract rate", {title:"speed of filament\nretraction in mm/s", convert:UC.toInt, modes:FDM}),
-            // outputShortDistance: UC.newInput("short distance", {title:"segment length cutoff\nfor short segments\nin millimeters", bound:UC.bound(0,200), convert:UC.toFloat, modes:FDM}),
-            // outputShortFactor: UC.newInput("short factor", {title:"max speed reduction factor\nfor short segments\nas % of print speed", bound:UC.bound(0.05,1), convert:UC.toFloat, modes:FDM}),
+            advanced: UC.newGroup("advanced", null, {modes:FDM}),
+            outputRetractOver: UC.newInput("retract over", {title:"retract filament for\nnon-print moves\nover this distance\n0 = disable", convert:UC.toFloat, modes:FDM}),
+            outputRetractDist: UC.newInput("retract dist", {title:"amount to retract filament", convert:UC.toFloat, modes:FDM}),
+            outputRetractSpeed: UC.newInput("retract rate", {title:"speed of filament\nretraction in mm/s", convert:UC.toInt, modes:FDM}),
+            outputShortDistance: UC.newInput("short distance", {title:"segment length cutoff\nfor short segments\nin millimeters", bound:UC.bound(0,200), convert:UC.toFloat, modes:FDM}),
+            outputShortFactor: UC.newInput("short factor", {title:"max speed reduction factor\nfor short segments\nas % of print speed", bound:UC.bound(0.05,1), convert:UC.toFloat, modes:FDM}),
         });
 
         function toolUpdate(a,b,c) {
@@ -2779,10 +2776,10 @@ self.kiri.license = exports.LICENSE;
                 UI.setDeviceExtrusion.checked = dev.extrudeAbs;
                 UI.setDeviceOrigin.checked = proc.outputOriginCenter;
                 // FDM
-                // UI.setDeviceFan.value = dev.gcodeFan;
-                // UI.setDeviceTrack.value = dev.gcodeTrack;
-                // UI.setDeviceFilament.value = dev.filamentSize;
-                // UI.setDeviceNozzle.value = dev.nozzleSize;
+                UI.setDeviceFan.value = dev.gcodeFan;
+                UI.setDeviceTrack.value = dev.gcodeTrack;
+                UI.setDeviceFilament.value = dev.filamentSize;
+                UI.setDeviceNozzle.value = dev.nozzleSize;
                 // CAM
                 UI.setDeviceMaxSpindle.value = dev.spindleMax;
                 UI.setDeviceDwell.value = dev.gcodeDwell.join('\n');
