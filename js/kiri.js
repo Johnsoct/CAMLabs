@@ -2169,28 +2169,28 @@ self.kiri.license = exports.LICENSE;
                     UC.newButton("Export",  exportPrint)
                 ]
             ]),
-            workspace: UC.newGroup('platform'),
-            wsTable: UC.newTableRow([
-                [
-                    UI.saveButton =
-                    UC.newButton("Save",    saveWorkspace),
-                ],[
-                    UC.newButton("Clear",   clearWorkspace)
-                ]
-            ]),
-            camera: UC.newGroup('view'),
-            camTable: UC.newTableRow([
-                [
-                    UC.newButton("home",  SPACE.view.home),
-                    UC.newButton("reset", SPACE.view.reset)
-                ],[
-                    UC.newButton("top",   SPACE.view.top),
-                    UC.newButton("front", SPACE.view.front),
-                ],[
-                    UC.newButton("left",  SPACE.view.left),
-                    UC.newButton("right", SPACE.view.right)
-                ]
-            ]),
+            // workspace: UC.newGroup('platform'),
+            // wsTable: UC.newTableRow([
+            //     [
+            //         UI.saveButton =
+            //         UC.newButton("Save",    saveWorkspace),
+            //     ],[
+            //         UC.newButton("Clear",   clearWorkspace)
+            //     ]
+            // ]),
+            // camera: UC.newGroup('view'),
+            // camTable: UC.newTableRow([
+            //     [
+            //         UC.newButton("home",  SPACE.view.home),
+            //         UC.newButton("reset", SPACE.view.reset)
+            //     ],[
+            //         UC.newButton("top",   SPACE.view.top),
+            //         UC.newButton("front", SPACE.view.front),
+            //     ],[
+            //         UC.newButton("left",  SPACE.view.left),
+            //         UC.newButton("right", SPACE.view.right)
+            //     ]
+            // ]),
             viewOpt: UC.newTableRow([[
                 UI.reverseZoom = UC.newBoolean(null, invertMouse, {title:"invert mouse\nscroll zoom"}),
                 UI.viewModelOpacity = UC.newRange(null, {title:"change model opacity"})
@@ -2249,7 +2249,7 @@ self.kiri.license = exports.LICENSE;
 
             // cam
             roughing: UC.newGroup("roughing", null, {modes:CAM}),
-            roughingTool: UC.newSelectField("tool", {modes:CAM}),
+            // roughingTool: UC.newSelectField("tool", {modes:CAM}),
             roughingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
             roughingOver: UC.newInput("step over", {title:"0.1 - 1.0\npercentage of\ntool diameter", convert:UC.toFloat, bound:UC.bound(0.1,1.0), modes:CAM}),
             roughingDown: UC.newInput("step down", {title:"step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
@@ -2260,7 +2260,7 @@ self.kiri.license = exports.LICENSE;
 
             // cam
             finishing: UC.newGroup("finishing", null, {modes:CAM}),
-            finishingTool: UC.newSelectField("tool", {modes:CAM}),
+            // finishingTool: UC.newSelectField("tool", {modes:CAM}),
             finishingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
             finishingOver: UC.newInput("step over", {title:"0.05 - 1.0\npercentage of\ntool diameter", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:CAM}),
             finishingDown: UC.newInput("step down", {title:"step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
@@ -2274,7 +2274,7 @@ self.kiri.license = exports.LICENSE;
 
             // cam
             drilling: UC.newGroup("drilling", null, {modes:CAM}),
-            drillTool: UC.newSelectField("tool", {modes:CAM}),
+            // drillTool: UC.newSelectField("tool", {modes:CAM}),
             drillSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
             drillDown: UC.newInput("plunge per", {title:"max plunge between\ndwell periods\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
             drillDownSpeed: UC.newInput("plunge rate", {title:"plunge rate\nin millimeters / minute\n0 to disable", convert:UC.toFloat, modes:CAM}),
