@@ -1976,8 +1976,8 @@ self.kiri.license = exports.LICENSE;
         saveSettings();
         clearWidgetCache();
         SPACE.update();
-        UI.modeFDM.setAttribute('class', MODE === MODES.FDM ? 'buton' : '');
-        UI.modeLASER.setAttribute('class', MODE === MODES.LASER ? 'buton' : '');
+        // UI.modeFDM.setAttribute('class', MODE === MODES.FDM ? 'buton' : '');
+        // UI.modeLASER.setAttribute('class', MODE === MODES.LASER ? 'buton' : '');
         UI.modeCAM.setAttribute('class', MODE === MODES.CAM ? 'buton' : '');
         UI.mode.style.display = lock ? 'none' : '';
         UI.modeTable.style.display = lock ? 'none' : '';
@@ -2120,13 +2120,15 @@ self.kiri.license = exports.LICENSE;
 
             mode: UC.newGroup('mode', assets),
             modeTable: UC.newTableRow([
+                // [
+                //     UI.modeFDM =
+                //     UC.newButton("FDM Printing", function() { setMode('FDM',null,updatePlatformSize) }),
+                // ],
+                // [
+                //     UI.modeLASER =
+                //     UC.newButton("Laser Cutting", function() { setMode('LASER',null,updatePlatformSize) }),
+                // ],
                 [
-                    UI.modeFDM =
-                    UC.newButton("FDM Printing", function() { setMode('FDM',null,updatePlatformSize) }),
-                ],[
-                    UI.modeLASER =
-                    UC.newButton("Laser Cutting", function() { setMode('LASER',null,updatePlatformSize) }),
-                ],[
                     UI.modeCAM =
                     UC.newButton("CNC Milling",   function() { setMode('CAM',null,updatePlatformSize) }, {id:"modeCAM"}),
                 ]
