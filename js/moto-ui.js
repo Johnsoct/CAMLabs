@@ -285,6 +285,8 @@ var gs_moto_ui = exports;
         return b;
     }
 
+    
+
     function newTableRow(arrayOfArrays, options) {
         return newRow(newTables(arrayOfArrays), options);
     }

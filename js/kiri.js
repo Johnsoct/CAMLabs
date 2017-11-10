@@ -1928,7 +1928,7 @@ self.kiri.license = exports.LICENSE;
         viewMode = mode;
         widgetDeselect();
         meshUpdateInfo();
-        [ UI.modeArrange, UI.modeSlice, UI.modePreview ].forEach(function(b) {
+        [ UI.modeArrange, UI.modeSlice ].forEach(function(b) { // remove UI.modePreview from array
             b.removeAttribute("class");
         });
         switch (mode) {
@@ -2158,11 +2158,13 @@ self.kiri.license = exports.LICENSE;
                     UC.newButton("Arrange", layoutPlatform),
                 ],[
                     UI.modeSlice =
-                    UC.newButton("Slice",   prepareSlices)
-                ],[
-                    UI.modePreview =
-                    UC.newButton("Preview", preparePrint),
-                ],[
+                    UC.newButton("Slice", preparePrint) // changed prepareSlices to preparePrint to combine the actions
+                ],
+                // [
+                //     UI.modePreview =
+                //     UC.newButton("Preview", preparePrint),
+                // ],
+                [
                     UI.modeExport =
                     UC.newButton("Export",  exportPrint)
                 ]
@@ -3115,7 +3117,7 @@ self.kiri.license = exports.LICENSE;
 
         UI.modeArrange.innerHTML = "<u>A</u>rrange";
         UI.modeSlice.innerHTML = "<u>S</u>lice";
-        UI.modePreview.innerHTML = "<u>P</u>review";
+        // UI.modePreview.innerHTML = "<u>P</u>review";
         UI.modeExport.innerHTML = "E<u>x</u>port";
 
         UI.layerID.convert = UC.toFloat.bind(UI.layerID);
