@@ -2135,13 +2135,14 @@ self.kiri.license = exports.LICENSE;
             ]),
             system: UC.newGroup('setup'),
             sysTable: UC.newTableRow([
+                // [
+                //     UI.setupDevices =
+                //     UC.newButton("Devices", showDevices, {modes:FDM_CAM})
+                // ],[
+                //     UI.setupTools =
+                //     UC.newButton('Tools',   showTools, {modes:CAM}),
+                // ],
                 [
-                    UI.setupDevices =
-                    UC.newButton("Devices", showDevices, {modes:FDM_CAM})
-                ],[
-                    UI.setupTools =
-                    UC.newButton('Tools',   showTools, {modes:CAM}),
-                ],[
                     UI.helpButton =
                     UC.newButton("Help",    showHelp)
                 ]
@@ -3109,8 +3110,8 @@ self.kiri.license = exports.LICENSE;
             UI.bedDepth,         updatePlatformSize
         ]);
 
-        UI.setupDevices.innerHTML = "D<u>e</u>vices";
-        UI.setupTools.innerHTML = "T<u>o</u>ols";
+        // UI.setupDevices.innerHTML = "D<u>e</u>vices";
+        // UI.setupTools.innerHTML = "T<u>o</u>ols";
 
         UI.modeArrange.innerHTML = "<u>A</u>rrange";
         UI.modeSlice.innerHTML = "<u>S</u>lice";
