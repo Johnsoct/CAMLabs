@@ -156,7 +156,8 @@ var gs_moto_ui = exports;
         return div;
     }
 
-    function newInputField(label, options) {
+    function newInputField(label, options, parentEl) {
+        parentEl = parentEl || null;
         var row = newDiv(options),
             hide = options && options.hide,
             size = options ? options.size || 5 : 5,
@@ -193,6 +194,12 @@ var gs_moto_ui = exports;
         }
         if (!ip.convert) ip.convert = raw.bind(ip);
         ip.setVisible = row.setVisible;
+
+        // append to group by parentEl param
+        if (!parentEl === null) {
+            const parent = document.querySelector(parentEl)
+            parent.appendChild(row);
+        }
         return ip;
     }
 
@@ -284,8 +291,6 @@ var gs_moto_ui = exports;
         addId(b, options);
         return b;
     }
-
-    
 
     function newTableRow(arrayOfArrays, options) {
         return newRow(newTables(arrayOfArrays), options);

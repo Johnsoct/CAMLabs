@@ -2247,10 +2247,10 @@ self.kiri.license = exports.LICENSE;
             laserOffset: UC.newInput("cut offset", {title:"millimeters\nadjust for beam width", convert:UC.toFloat, modes:LASER}),
             laserSliceHeight: UC.newInput("layer height", {title:"millimeters\n0 = auto/detect", convert:UC.toFloat, modes:LASER}),
 
-            // cam
+            // cam - group id = ck_roughing
             roughing: UC.newGroup("roughing", null, {modes:CAM}),
             // roughingTool: UC.newSelectField("tool", {modes:CAM}),
-            roughingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
+            roughingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}, '#ck_roughing'),
             roughingOver: UC.newInput("step over", {title:"0.1 - 1.0\npercentage of\ntool diameter", convert:UC.toFloat, bound:UC.bound(0.1,1.0), modes:CAM}),
             roughingDown: UC.newInput("step down", {title:"step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
             roughingSpeed: UC.newInput("feed rate", {title:"max speed while cutting\nmillimeters / minute", convert:UC.toInt, modes:CAM}),
@@ -2258,7 +2258,7 @@ self.kiri.license = exports.LICENSE;
             roughingStock: UC.newInput("leave stock", {title:"horizontal offset from vertical faces\nstock to leave for finishing pass\nin millimeters", convert:UC.toFloat, modes:CAM}),
             roughingOn: UC.newBoolean("enable", onBooleanClick, {modes:CAM}),
 
-            // cam
+            // cam - group id = ck_finishing
             finishing: UC.newGroup("finishing", null, {modes:CAM}),
             // finishingTool: UC.newSelectField("tool", {modes:CAM}),
             finishingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
@@ -2272,7 +2272,7 @@ self.kiri.license = exports.LICENSE;
             finishingYOn: UC.newBoolean("linear y", onBooleanClick, {title:"linear y-axis finishing", modes:CAM}),
             finishCurvesOnly: UC.newBoolean("curves only", onBooleanClick, {title:"limit linear cleanup\nto curved surfaces\nto reduce time", modes:CAM}),
 
-            // cam
+            // cam - group id = ck_drilling
             drilling: UC.newGroup("drilling", null, {modes:CAM}),
             // drillTool: UC.newSelectField("tool", {modes:CAM}),
             drillSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
@@ -2282,7 +2282,7 @@ self.kiri.license = exports.LICENSE;
             drillLift: UC.newInput("drill lift", {title:"lift between plunges\nafter dwell period\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
             drillingOn: UC.newBoolean("enable", onBooleanClick, {modes:CAM}),
 
-            // cam tabs
+            // cam tabs - group id = ck_cutout
             camTabs: UC.newGroup("cutout tabs", null, {modes:CAM}),
             camTabsWidth: UC.newInput("width", {title:"width in millimeters\nperpendicular to part", convert:UC.toFloat, bound:UC.bound(1,100), modes:CAM}),
             camTabsHeight: UC.newInput("height", {title:"height in millimeters\nfrom part bottom", convert:UC.toFloat, bound:UC.bound(1,100), modes:CAM}),
@@ -2302,7 +2302,7 @@ self.kiri.license = exports.LICENSE;
             outputShellMult: UC.newInput("shell factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
             outputFillMult: UC.newInput("fill factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
 
-            // cam
+            //
             camTolerance: UC.newInput("tolerance", {title:"surface precision\nin millimeters", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:CAM}),
             camZTopOffset: UC.newInput("z top offset", {title:"offset from stock surface\nto top face of part\nin millimeters", convert:UC.toFloat, modes:CAM}),
             camZBottom: UC.newInput("z bottom", {title:"offset from part bottom\nto limit cutting depth\nin millimeters", convert:UC.toFloat, modes:CAM}),
