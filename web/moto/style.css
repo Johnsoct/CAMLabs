@@ -19,9 +19,11 @@ body,div {
     font-family: sans-serif;
 }
 label {
+    color: #282828;
     font-size: 14px;
-    border-bottom: 1px solid #888;
+    padding: 4px;
     margin-right: 2px;
+    text-align: left;
 }
 canvas {
     width: 100%;
@@ -32,8 +34,6 @@ button {
     outline: none;
     max-width: 25ex;
     border: 1px solid rgba(220,220,220,0.8);
-    border-top-left-radius: 3px;
-    border-bottom-right-radius: 3px;
     background-color: rgba(210,210,210,0.8);
 }
 button:hover {
@@ -86,19 +86,17 @@ button[del] {
     -webkit-flex-grow: 1;
     flex-grow: 1;
     flex-basis: auto;
-    width: 33.33%;
+    /* width: 33.33%; */
 }
 .grouphead {
-    color: #fff;
-    border-radius: 4px;
-    padding: 4px 5px 3px 5px;
-    margin-top: 3px;
-    margin-bottom: 1px;
+    color: #282828;
+    /* padding: 4px 5px 3px 5px; */
+    margin-top: 8px;
+    margin-bottom: 8px;
     text-align: center;
-    text-transform: uppercase;
     font-size: 10pt;
     font-weight: normal;
-    background-color: rgba(0,0,0,0.75);
+    background-color: transparent;
 }
 .grouphead:hover {
     cursor: default;
@@ -122,7 +120,7 @@ button[del] {
 }
 .buton {
     font-weight: bold;
-    background-color: #fff;
+    background-color: #132f82 !important;
 }
 
 .flow-row {
@@ -133,6 +131,7 @@ button[del] {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    margin: 3px 0;
 }
 .flow-row label {
     -webkit-flex-basis: auto;
@@ -200,12 +199,9 @@ button[del] {
     top: 0px;
     left: 0px;
     bottom: 0px;
-    padding: 5px;
-    border-top: 1px solid #bbb;
-    border-right: 1px solid #bbb;
-    border-bottom: 1px solid #bbb;
-    background-color: rgba(20,20,20,0.5);
+    padding: 8px;
     overflow-y: scroll;
+    width: 15%;
 }
 #control-left::-webkit-scrollbar {
     display: none;
@@ -219,14 +215,11 @@ button[del] {
     top: 0px;
     right: 0px;
     bottom: 0px;
-    padding: 5px;
-    border-top: 1px solid #bbb;
-    border-left: 1px solid #bbb;
-    border-bottom: 1px solid #bbb;
-    background-color: rgba(20,20,20,.5);
+    padding: 8px;
     color: #eee;
     overflow-y: scroll;
     overflow-x: visible;
+    width: 15%;
 }
 #loading {
     position: fixed;
@@ -274,4 +267,300 @@ button[del] {
     font-family: monospace;
     white-space: pre;
     overflow-y: scroll
+}
+
+
+/************************************************************
+CAMLab Adjustments
+************************************************************/
+#control-left {
+  max-width: 175px;
+  background-color: transparent;
+}
+
+#control-left .grouphead {
+    padding: 8px;
+    border: 1px solid #132f82;
+    background-color: #f0f9fd;
+}
+
+#control-left .groupLabel a {
+    color: #132f82;
+    text-transform: capitalize;
+    font-size: 16px;
+}
+
+#control-right {
+  max-width: 175px;
+  background-color: transparent;
+}
+
+#ck_importgroup {
+  display: none;
+}
+
+#ck_settings {
+  margin-top: 0px;
+}
+
+#control-right .groupLabel a {
+    display: block;
+    /* width: 100%; */
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: #3e85c7;
+    color: #f8f8f8;
+    border-radius: 6px;
+    border: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.grouphead {
+  opacity: 0.9;
+}
+
+#control-right .grouphead {
+  position: relative;
+}
+
+#control-right .grouphead > * {
+  height: 0;
+  visibility: hidden;
+}
+
+#control-right .grouphead > a {
+  height: 100%;
+  visibility: visible;
+}
+
+#control-right .grouphead > .enable-checkbox {
+  height: auto;
+  visibility: visible;
+}
+
+.enable-checkbox {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin: 11px;
+}
+
+#ck_layers {
+    display: none;
+}
+
+#ck_materialsize {
+  display: block
+}
+
+#ck_materialsize a {
+  display: block;
+  width: 100%;
+}
+
+#ck_materialsize label {
+  display: none;
+}
+
+#ck_materialsize .ck_materialsize {
+  display: inline-block;
+  width: auto
+}
+
+  #ck_materialsize .ck_materialsize:nth-child(2)::before {
+  content: 'L';
+  margin: 0 3px;
+}
+
+  #ck_materialsize .ck_materialsize:nth-child(3)::before {
+  content: 'W';
+  margin: 0 3px;
+}
+
+#ck_materialsize .ck_materialsize:nth-child(4)::before {
+  content: 'H';
+  margin: 0 3px;
+}
+
+#button_Import {
+    background-color: #3e85c7;
+    color: #f8f8f8;
+    padding: 8px;
+    border-radius: 6px 0 0 6px;
+    border: none;
+    text-transform: uppercase;
+    font-size: 18px;
+    display: inline-block;
+}
+
+#button_\+ {
+    background-color: #3e85c7;
+    color: #f8f8f8;
+    padding: 8px;
+    border-radius: 0 6px 6px 0;
+    border: none;
+    text-transform: uppercase;
+    font-size: 18px;
+    display: inline-block;
+}
+
+#localCache {
+  color: #132f82;
+}
+
+#button_Arrange {
+  background-color: #3e85c7;
+  color: #f8f8f8;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: none;
+  text-transform: uppercase;
+  font-size: 18px;
+  display: inline-block;
+}
+
+#button_Slice {
+    background-color: #3e85c7;
+    color: #f8f8f8;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    text-transform: uppercase;
+    font-size: 18px;
+    display: inline-block;
+}
+
+#button_Send {
+  position: fixed;
+  top: 8px;
+  left: calc(50% + 2px);
+  background-color: #3e85c7;
+  color: #f8f8f8;
+  width: 100px;
+  padding: 8px;
+  border-radius: 0 6px 6px 0;
+  border: none;
+  text-transform: uppercase;
+  font-size: 24px;
+  display: inline-block;
+}
+
+#button_Cam {
+  position: fixed;
+  top: 8px;
+  left: calc(50% - 102px);
+  background-color: #3e85c7;
+  color: #f8f8f8;
+  width: 100px;
+  padding: 8px;
+  border-radius: 6px 0 0 6px;
+  border: none;
+  text-transform: uppercase;
+  font-size: 24px;
+  display: inline-block;
+}
+
+#button_EndMill {
+  background-color: #3e85c7;
+  color: #f8f8f8;
+  padding: 8px;
+  border-radius: 6px 0 0 6px;
+  border: none;
+  text-transform: uppercase;
+  font-size: 18px;
+  display: inline-block;
+}
+
+#tool-num {
+  display: none;
+}
+
+#tool-action {
+  margin: 0;
+}
+
+#tool-action button {
+  padding: 4px 8px;
+  background-color: #3e85c7;
+  color: #f8f8f8;
+  border-radius: 0px 0px 6px 6px;
+  z-index: -1;
+}
+
+#tool-type {
+  border: 0;
+  outline: 1px solid #CCC;
+}
+
+#tool-add {
+  position: absolute;
+  top: 9px;
+  left: 115px;
+}
+
+#tool-del {
+  position: absolute;
+  top: 9px;
+  left: 145px;
+}
+
+#tools-save {
+  position: absolute;
+  top: 9px;
+  left: 248px;
+}
+
+#tools-close {
+  position: absolute;
+  top: 9px;
+  left: 295px;
+}
+
+#button_\> {
+  background-color: #3e85c7;
+  color: #f8f8f8;
+  padding: 8px;
+  border-radius: 0 6px 6px 0;
+  border: none;
+  text-transform: uppercase;
+  font-size: 18px;
+  display: inline-block;
+}
+
+#button_Tool {
+  border: 1px solid #3e85c7;
+  border-top: none;
+  background-color: #f0f9fd;
+  width: 100%;
+  margin: 0;
+  margin-top: -2px;
+  max-width: none;
+  z-index: -1;
+}
+
+#settings span {
+  color: #132f82;
+  text-transform: capitalize;
+  font-size: 16px;
+}
+
+#settingsList button {
+  color: #f8f8f8;
+  background-color: #3e85c7;
+  border: none;
+}
+
+#settingsList button[load] {
+  border-radius: 4px 0 0 4px;
+}
+
+#settingsList button[del] {
+  border-radius: 0 4px 4px 0;
+}
+
+label#Metric {
+  display: inline;
+  color: #282828;
 }

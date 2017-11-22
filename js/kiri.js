@@ -813,7 +813,7 @@ self.kiri.license = exports.LICENSE;
             }
         }
 
-        setViewMode(VIEWS.PREVIEW);
+        setViewMode(VIEWS.SLICE);
 
         clearPrint();
         saveSettings();
@@ -855,8 +855,8 @@ self.kiri.license = exports.LICENSE;
         }
         STATS.add('e-'+getMode().toLowerCase());
         switch (settings.mode) {
-            case 'LASER': return exportPrintLaser();
-            case 'FDM': return exportPrintGCODE();
+            // case 'LASER': return exportPrintLaser();
+            // case 'FDM': return exportPrintGCODE();
             case 'CAM': return exportPrintGCODE();
         }
     }
@@ -866,7 +866,8 @@ self.kiri.license = exports.LICENSE;
             preparePrint(exportPrint);
             return;
         }
-        currentPrint.exportGCode(printRemote, function(gcode) {
+        console.log(currentPrint)
+        currentPrint.exportGCode(printRemote, function (gcode) {
             exportGCode(gcode);
         });
     }
@@ -1072,33 +1073,33 @@ self.kiri.license = exports.LICENSE;
             UI.print.innerHTML = html;
             $('print-close').onclick = hideModal;
             $('print-download').onclick = download;
-            $('print-octoprint').onclick = octoprint;
-            $('print-gridprint').onclick = gridprint;
-            $('print-serial').onclick = showSerial;
-            $('print-serial').style.display = MODE === MODES.CAM ? '' : 'none';
-            $('print-filament-row').style.display = MODE === MODES.FDM ? '' : 'none';
-            $('mill-info').style.display = MODE === MODES.CAM ? '' : 'none';
+            // $('print-octoprint').onclick = octoprint;
+            // $('print-gridprint').onclick = gridprint;
+            // $('print-serial').onclick = showSerial;
+            // $('print-serial').style.display = MODE === MODES.CAM ? '' : 'none';
+            // $('print-filament-row').style.display = MODE === MODES.FDM ? '' : 'none';
+            // $('mill-info').style.display = MODE === MODES.CAM ? '' : 'none';
             $('print-filename').value = filename;
-            $('print-filesize').value = currentPrint.bytes;
-            $('print-filament').value = Math.round(currentPrint.distance);
-            calcTime();
-            calcWeight();
-            octo_host = $('octo-host');
-            octo_apik = $('octo-apik');
-            if (OCTOPRINT) {
-                $('ophost').style.display = 'none';
-                $('opapik').style.display = 'none';
-                $('ophint').style.display = 'none';
-                $('send-to-gridprint').style.display = 'none';
-            }
-            octo_host.value = SDB['octo-host'] || '';
-            octo_apik.value = SDB['octo-apik'] || '';
-            grid_host = $('grid-host');
-            grid_apik = $('grid-apik');
-            grid_target = $('grid-target');
-            grid_host.value = SDB['grid-host'] || '';
-            grid_apik.value = SDB['grid-apik'] || '';
-            grid_target.value = SDB['grid-target'] || '';
+            // $('print-filesize').value = currentPrint.bytes;
+            // $('print-filament').value = Math.round(currentPrint.distance);
+            // calcTime();
+            // calcWeight();
+            // octo_host = $('octo-host');
+            // octo_apik = $('octo-apik');
+            // if (OCTOPRINT) {
+            //     $('ophost').style.display = 'none';
+            //     $('opapik').style.display = 'none';
+            //     $('ophint').style.display = 'none';
+            //     $('send-to-gridprint').style.display = 'none';
+            // }
+            // octo_host.value = SDB['octo-host'] || '';
+            // octo_apik.value = SDB['octo-apik'] || '';
+            // grid_host = $('grid-host');
+            // grid_apik = $('grid-apik');
+            // grid_target = $('grid-target');
+            // grid_host.value = SDB['grid-host'] || '';
+            // grid_apik.value = SDB['grid-apik'] || '';
+            // grid_target.value = SDB['grid-target'] || '';
             showModal('print');
         });
     }
@@ -1245,7 +1246,7 @@ self.kiri.license = exports.LICENSE;
 
     function setOpacity(value) {
         forWidgets(function (w) { w.setOpacity(value) });
-        UI.viewModelOpacity.value = value * 100;
+        // UI.viewModelOpacity.value = value * 100;
         SPACE.update();
     }
 
@@ -1467,7 +1468,8 @@ self.kiri.license = exports.LICENSE;
     /**
      * @returns {Object}
      */
-    function updateFieldsFromSettings(scope) {
+  function updateFieldsFromSettings(scope) {
+    // console.log('test');
         if (!scope) return console.trace("missing scope");
 
         var key, val;
@@ -1700,7 +1702,7 @@ self.kiri.license = exports.LICENSE;
             if (settings.controller.view) {
                 camera = settings.controller.view;
                 SDB.removeItem('ws-camera');
-                UI.reverseZoom.checked = settings.controller.reverseZoom;
+                // UI.reverseZoom.checked = settings.controller.reverseZoom;
             }
             // update/integrate old settings
             ["FDM","CAM","LASER"].forEach(function(mode) {
@@ -1804,7 +1806,8 @@ self.kiri.license = exports.LICENSE;
 
     function loadNamedSetting(e) {
         var name = e ? e.target.getAttribute("load") : settings.cproc[getMode()],
-            load = settings.sproc[getMode()][name];
+            load = settings.sproc[getMode()][name],
+            settingsLabel = DOC.querySelector('#ck_settings_label');
         if (!load) return;
         for (var k in load) {
             if (!load.hasOwnProperty(k)) continue;
@@ -1816,6 +1819,7 @@ self.kiri.license = exports.LICENSE;
         hideDialog();
         updateSettings();
         if (e) triggerSettingsEvent();
+        settingsLabel.textContent = name;
     }
 
     function deleteNamedSetting(e) {
@@ -1978,9 +1982,9 @@ self.kiri.license = exports.LICENSE;
         SPACE.update();
         // UI.modeFDM.setAttribute('class', MODE === MODES.FDM ? 'buton' : '');
         // UI.modeLASER.setAttribute('class', MODE === MODES.LASER ? 'buton' : '');
-        UI.modeCAM.setAttribute('class', MODE === MODES.CAM ? 'buton' : '');
-        UI.mode.style.display = lock ? 'none' : '';
-        UI.modeTable.style.display = lock ? 'none' : '';
+        // UI.modeCAM.setAttribute('class', MODE === MODES.CAM ? 'buton' : '');
+        // UI.mode.style.display = lock ? 'none' : '';
+        // UI.modeTable.style.display = lock ? 'none' : '';
         if (camStock) camStock.material.visible = settings.mode === 'CAM';
         restoreWorkspace(null,true);
         if (MODE !== MODES.FDM) layoutPlatform(0, 1);
@@ -2009,7 +2013,7 @@ self.kiri.license = exports.LICENSE;
         var assets = $('assets'),
             control = $('control'),
             container = $('container'),
-            welcome = $('welcome'),
+            welcome = $('welcome'),w
             selectedTool = null,
             editTools = null,
             ROT = Math.PI/2,
@@ -2118,57 +2122,48 @@ self.kiri.license = exports.LICENSE;
             scaleZ: $('scale_z'),
             scaleUniform: $('scale_uni'),
 
-            mode: UC.newGroup('mode', assets),
-            modeTable: UC.newTableRow([
-                // [
-                //     UI.modeFDM =
-                //     UC.newButton("FDM Printing", function() { setMode('FDM',null,updatePlatformSize) }),
-                // ],
-                // [
-                //     UI.modeLASER =
-                //     UC.newButton("Laser Cutting", function() { setMode('LASER',null,updatePlatformSize) }),
-                // ],
-                [
-                    UI.modeCAM =
-                    UC.newButton("CNC Milling",   function() { setMode('CAM',null,updatePlatformSize) }, {id:"modeCAM"}),
-                ]
+            // mode: UC.newGroup('', assets),
+            // modeTable: UC.newTableRow([
+            //     [
+            //         UI.modeFDM =
+            //         UC.newButton("FDM Printing", function() { setMode('FDM',null,updatePlatformSize) }),
+            //     ],
+            //     [
+            //         UI.modeLASER =
+            //         UC.newButton("Laser Cutting", function() { setMode('LASER',null,updatePlatformSize) }),
+            //     ],
+            //     [
+            //         UI.modeCAM =
+            //         UC.newButton("CNC Milling",   function() { setMode('CAM',null,updatePlatformSize) }, {id:"modeCAM"}),
+            //     ]
+            // ]),
+            layers: UC.newGroup("layers", assets),
+            layerOutline: UC.newBoolean("outline", onBooleanClick, { modes: LOCAL ? ALL : FDM_LASER }),
+            layerTrace: UC.newBoolean("trace", onBooleanClick, { modes: FDM_LASER }),
+            layerFacing: UC.newBoolean("facing", onBooleanClick, { modes: CAM }),
+            layerRough: UC.newBoolean("roughing", onBooleanClick, { modes: CAM }),
+            layerFinish: UC.newBoolean("finishing", onBooleanClick, { modes: CAM }),
+            layerFinishX: UC.newBoolean("finish x", onBooleanClick, { modes: CAM }),
+            layerFinishY: UC.newBoolean("finish y", onBooleanClick, { modes: CAM }),
+            layerDelta: UC.newBoolean("delta", onBooleanClick, { modes: FDM }),
+            layerSolid: UC.newBoolean("solids", onBooleanClick, { modes: FDM }),
+            layerFill: UC.newBoolean("solid fill", onBooleanClick, { modes: FDM }),
+            layerSparse: UC.newBoolean("sparse fill", onBooleanClick, { modes: FDM }),
+            layerSupport: UC.newBoolean("support", onBooleanClick, { modes: FDM }),
+            layerPrint: UC.newBoolean("print", onBooleanClick),
+            layerDebug: UC.newBoolean("debug", onBooleanClick, { hide: !LOCAL }),
+
+            importButton: UC.newTableRow([
+              [
+                  UC.newButton("Import", function () { KIRI.api.import() }),
+                  UI.import = UC.newButton('+')
+              ]
             ]),
-            system: UC.newGroup('setup'),
-            sysTable: UC.newTableRow([
-                // [
-                //     UI.setupDevices =
-                //     UC.newButton("Devices", showDevices, {modes:FDM_CAM})
-                // ],[
-                //     UI.setupTools =
-                //     UC.newButton('Tools',   showTools, {modes:CAM}),
-                // ],
-                [
-                    UI.helpButton =
-                    UC.newButton("Help",    showHelp)
-                ]
-            ]),
-            wsFunc: UC.newGroup('function'),
-            wsFuncTable: UC.newTableRow([
-                [
-                    UC.newButton("Import",  function() { KIRI.api.import() }),
-                    UI.import =
-                    UC.newButton("+")
-                ],[
-                    UI.modeArrange =
-                    UC.newButton("Arrange", layoutPlatform),
-                ],[
-                    UI.modeSlice =
-                    UC.newButton("Slice", preparePrint) // changed prepareSlices to preparePrint to combine the actions
-                ],
-                // [
-                //     UI.modePreview =
-                //     UC.newButton("Preview", preparePrint),
-                // ],
-                [
-                    UI.modeExport =
-                    UC.newButton("Export",  exportPrint)
-                ]
-            ]),
+            // helpButton: UC.newTableRow([
+            //   [
+            //     UI.helpButton = UC.newButton('Help', showHelp)
+            //   ]
+            // ]),
             // workspace: UC.newGroup('platform'),
             // wsTable: UC.newTableRow([
             //     [
@@ -2191,26 +2186,83 @@ self.kiri.license = exports.LICENSE;
             //         UC.newButton("right", SPACE.view.right)
             //     ]
             // ]),
-            viewOpt: UC.newTableRow([[
-                UI.reverseZoom = UC.newBoolean(null, invertMouse, {title:"invert mouse\nscroll zoom"}),
-                UI.viewModelOpacity = UC.newRange(null, {title:"change model opacity"})
-            ]]),
+            // viewOpt: UC.newTableRow([[
+            //     UI.reverseZoom = UC.newBoolean(null, invertMouse, {title:"invert mouse\nscroll zoom"}),
+            //     UI.viewModelOpacity = UC.newRange(null, {title:"change model opacity"})
+            // ]]),
+            // Material
+            camStock: UC.newGroup("material size", null, { modes: CAM }),
+            camStockX: UC.newInput("width", { title: "width in millimeters\n0 defaults to part size", convert: UC.toFloat, bound: UC.bound(0, 9999), modes: CAM, size: 3 }),
+            camStockY: UC.newInput("depth", { title: "depth in millimeters\n0 defaults to part size", convert: UC.toFloat, bound: UC.bound(0, 9999), modes: CAM, size: 3 }),
+            camStockZ: UC.newInput("height", { title: "depth in millimeters\n0 defaults to part size", convert: UC.toFloat, bound: UC.bound(0, 9999), modes: CAM, size: 3 }),
+            lxwxh: UC.newBoolean('Metric', { title: "change mm to in and vice versa" }),
 
-            layers: UC.setGroup($("layers")),
-            layerOutline: UC.newBoolean("outline", onBooleanClick, {modes:LOCAL ? ALL : FDM_LASER}),
-            layerTrace: UC.newBoolean("trace", onBooleanClick, {modes:FDM_LASER}),
-            layerFacing: UC.newBoolean("facing", onBooleanClick, {modes:CAM}),
-            layerRough: UC.newBoolean("roughing", onBooleanClick, {modes:CAM}),
-            layerFinish: UC.newBoolean("finishing", onBooleanClick, {modes:CAM}),
-            layerFinishX: UC.newBoolean("finish x", onBooleanClick, {modes:CAM}),
-            layerFinishY: UC.newBoolean("finish y", onBooleanClick, {modes:CAM}),
-            layerDelta: UC.newBoolean("delta", onBooleanClick, {modes:FDM}),
-            layerSolid: UC.newBoolean("solids", onBooleanClick, {modes:FDM}),
-            layerFill: UC.newBoolean("solid fill", onBooleanClick, {modes:FDM}),
-            layerSparse: UC.newBoolean("sparse fill", onBooleanClick, {modes:FDM}),
-            layerSupport: UC.newBoolean("support", onBooleanClick, {modes:FDM}),
-            layerPrint: UC.newBoolean("print", onBooleanClick),
-            layerDebug: UC.newBoolean("debug", onBooleanClick, {hide:!LOCAL}),
+
+            // system: UC.newGroup('setup'),
+            endMill: UC.newTableRow([
+              [
+                UC.newButton('End Mill', null),
+                UI.setupTools = UC.newButton('>', showTools, { modes: CAM }),
+              ],
+              [
+                UC.newButton('Tool', null),
+              ]
+            ]),
+
+            // Output
+            output: UC.newGroup("positioning"),
+            outputOriginCenter: UC.newBoolean("origin center", onBooleanClick, { modes: CAM_LASER }),
+            camOriginTop: UC.newBoolean("origin top", onBooleanClick, { modes: CAM }),
+            // outputTileSpacing: UC.newInput("spacing", { title: "millimeters\ndistance between layer output", convert: UC.toInt, modes: LASER, size: 8}),
+            // outputTileScaling: UC.newInput("scaling", { title: "multiplier (0.1 to 100)", convert: UC.toInt, bound: UC.bound(0.1, 100), modes: LASER, size: 8}),
+            // outputLaserPower: UC.newInput("power", { title: "0 - 100 %", convert: UC.toInt, bound: UC.bound(1, 100), modes: LASER, size: 8}),
+            // outputLaserSpeed: UC.newInput("speed", { title: "millimeters / minute", convert: UC.toInt, modes: LASER, size: 8}),
+            // outputBedTemp: UC.newInput("bed temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
+            // outputTemp: UC.newInput("nozzle temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
+            // outputFeedrate: UC.newInput("print speed", {title:"print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
+            // outputSeekrate: UC.newInput("move speed", {title:"non-print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
+            // outputShellSpeed: UC.newInput("shell speed", {title:"speed multiplier\n0.1 - 2.0", convert:UC.toFloat, bound:UC.bound(0.1,2.0), modes:FDM}),
+            // outputShellMult: UC.newInput("shell factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
+            // outputFillMult: UC.newInput("fill factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
+            // camTolerance: UC.newInput("tolerance", { title: "surface precision\nin millimeters", convert: UC.toFloat, bound: UC.bound(0.05, 1.0), modes: CAM, size: 8}),
+            camZTopOffset: UC.newInput("z top offset", { title: "offset from stock surface\nto top face of part\nin millimeters", convert: UC.toFloat, modes: CAM, size: 3 }),
+            // camZBottom: UC.newInput("z bottom", { title: "offset from part bottom\nto limit cutting depth\nin millimeters", convert: UC.toFloat, modes: CAM, size: 8 }),
+            camZClearance: UC.newInput("safe height", { title: "travel offset from z top\nin millimeters", convert: UC.toFloat, bound: UC.bound(1, 100), modes: CAM, size: 3 }),
+            // Path Alteration
+            pathAlteration: UC.newGroup('path alterations', null, { modes: CAM }),
+            camPocketOnly: UC.newBoolean("pocket only", onBooleanClick, { title: "constrain to\npart boundaries", modes: CAM }),
+            // camEaseDown: UC.newBoolean("ease down", onBooleanClick, {title:"rough plunge cuts\nwill spiral down", modes:CAM}),
+            camDepthFirst: UC.newBoolean("depth first", onBooleanClick, { title: "optimize pocket cuts\nwith depth priority", modes: CAM }),
+            outputClockwise: UC.newBoolean("clockwise", onBooleanClick, { title: "waterline milling direction", modes: CAM }),
+            // wsFunc: UC.newGroup('function'),
+            wsFuncTable: UC.newTableRow([
+              // [
+              //     UC.newButton("Import",  function() { KIRI.api.import() }),
+              //     UI.import =
+              //     UC.newButton("+")
+              // ],
+              [
+                UI.modeArrange =
+                UC.newButton("Arrange", layoutPlatform),
+              ],
+              [
+                UI.modeSlice =
+                UC.newButton("Slice", preparePrint) // changed prepareSlices to preparePrint to combine the actions
+              ],
+              // [
+              //     UI.modePreview =
+              //     UC.newButton("Preview", preparePrint),
+              // ],
+              [
+                UI.modeCAM = UC.newButton('Cam', null)
+              ],
+              [
+                UI.modeExport =
+                UC.newButton("Send", exportPrint)
+              ]
+            ]),
+
+
 
             settingsGroup: UC.newGroup("settings", control),
             settingsTable: UC.newTableRow([
@@ -2248,77 +2300,42 @@ self.kiri.license = exports.LICENSE;
             laserSliceHeight: UC.newInput("layer height", {title:"millimeters\n0 = auto/detect", convert:UC.toFloat, modes:LASER}),
 
             // cam - group id = ck_roughing
-            roughing: UC.newGroup("roughing", null, {modes:CAM}),
+            roughing: UC.newGroup("roughing", null, { modes: CAM }, true, onBooleanClick),
             // roughingTool: UC.newSelectField("tool", {modes:CAM}),
-            roughingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}, '#ck_roughing'),
-            roughingOver: UC.newInput("step over", {title:"0.1 - 1.0\npercentage of\ntool diameter", convert:UC.toFloat, bound:UC.bound(0.1,1.0), modes:CAM}),
-            roughingDown: UC.newInput("step down", {title:"step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
-            roughingSpeed: UC.newInput("feed rate", {title:"max speed while cutting\nmillimeters / minute", convert:UC.toInt, modes:CAM}),
-            roughingPlunge: UC.newInput("plunge rate", {title:"max speed on z axis\nmillimeters / minute", convert:UC.toInt, modes:CAM}),
-            roughingStock: UC.newInput("leave stock", {title:"horizontal offset from vertical faces\nstock to leave for finishing pass\nin millimeters", convert:UC.toFloat, modes:CAM}),
-            roughingOn: UC.newBoolean("enable", onBooleanClick, {modes:CAM}),
+            roughingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM, size:8}),
+            roughingOver: UC.newInput("step over", { title: "0.1 - 1.0\npercentage of\ntool diameter", convert: UC.toFloat, bound: UC.bound(0.1, 1.0), modes: CAM, size:8}),
+            roughingDown: UC.newInput("step down", { title: "step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert: UC.toFloat, modes: CAM, size:8}),
+            roughingSpeed: UC.newInput("feed rate", { title: "max speed while cutting\nmillimeters / minute", convert: UC.toInt, modes: CAM, size:8}),
+            roughingPlunge: UC.newInput("plunge rate", { title: "max speed on z axis\nmillimeters / minute", convert: UC.toInt, modes: CAM, size:8}),
+            roughingStock: UC.newInput("leave stock", { title: "horizontal offset from vertical faces\nstock to leave for finishing pass\nin millimeters", convert: UC.toFloat, modes: CAM, size:8}),
 
             // cam - group id = ck_finishing
-            finishing: UC.newGroup("finishing", null, {modes:CAM}),
+            finishing: UC.newGroup("finishing", null, { modes: CAM }, true, onBooleanClick),
             // finishingTool: UC.newSelectField("tool", {modes:CAM}),
-            finishingSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
-            finishingOver: UC.newInput("step over", {title:"0.05 - 1.0\npercentage of\ntool diameter", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:CAM}),
-            finishingDown: UC.newInput("step down", {title:"step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
-            finishingAngle: UC.newInput("max angle", {title:"angles greater than this\nare considered vertical", convert:UC.toFloat, bound:UC.bound(45,90), modes:CAM}),
-            finishingSpeed: UC.newInput("feed rate", {title:"max speed while cutting\nmillimeters / minute", convert:UC.toInt, modes:CAM}),
-            finishingPlunge: UC.newInput("plunge rate", {title:"max speed on z axis\nmillimeters / minute", convert:UC.toInt, modes:CAM}),
+            finishingSpindle: UC.newInput("spindle rpm", { title: "spindle speed rpm", convert: UC.toInt, modes: CAM, size: 8}),
+            finishingOver: UC.newInput("step over", { title: "0.05 - 1.0\npercentage of\ntool diameter", convert: UC.toFloat, bound: UC.bound(0.05, 1.0), modes: CAM, size: 8}),
+            finishingDown: UC.newInput("step down", { title: "step down depth for\neach roughing pass\nin millimeters\n0 to disable", convert: UC.toFloat, modes: CAM, size: 8}),
+            finishingAngle: UC.newInput("max angle", { title: "angles greater than this\nare considered vertical", convert: UC.toFloat, bound: UC.bound(45, 90), modes: CAM, size: 8}),
+            finishingSpeed: UC.newInput("feed rate", { title: "max speed while cutting\nmillimeters / minute", convert: UC.toInt, modes: CAM, size: 8}),
+            finishingPlunge: UC.newInput("plunge rate", { title: "max speed on z axis\nmillimeters / minute", convert: UC.toInt, modes: CAM, size: 8}),
             finishingOn: UC.newBoolean("waterline", onBooleanClick, {title:"contour finishing\ndisabled when pocketing", modes:CAM}),
             finishingXOn: UC.newBoolean("linear x", onBooleanClick, {title:"linear x-axis finishing", modes:CAM}),
             finishingYOn: UC.newBoolean("linear y", onBooleanClick, {title:"linear y-axis finishing", modes:CAM}),
             finishCurvesOnly: UC.newBoolean("curves only", onBooleanClick, {title:"limit linear cleanup\nto curved surfaces\nto reduce time", modes:CAM}),
 
             // cam - group id = ck_drilling
-            drilling: UC.newGroup("drilling", null, {modes:CAM}),
+            drilling: UC.newGroup("drilling", null, { modes: CAM }, true, onBooleanClick),
             // drillTool: UC.newSelectField("tool", {modes:CAM}),
-            drillSpindle: UC.newInput("spindle rpm", {title:"spindle speed rpm", convert:UC.toInt, modes:CAM}),
-            drillDown: UC.newInput("plunge per", {title:"max plunge between\ndwell periods\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
-            drillDownSpeed: UC.newInput("plunge rate", {title:"plunge rate\nin millimeters / minute\n0 to disable", convert:UC.toFloat, modes:CAM}),
-            drillDwell: UC.newInput("dwell time", {title:"dwell time\nbetween plunges in\nin milliseconds", convert:UC.toFloat, modes:CAM}),
-            drillLift: UC.newInput("drill lift", {title:"lift between plunges\nafter dwell period\nin millimeters\n0 to disable", convert:UC.toFloat, modes:CAM}),
-            drillingOn: UC.newBoolean("enable", onBooleanClick, {modes:CAM}),
+            drillSpindle: UC.newInput("spindle rpm", { title: "spindle speed rpm", convert: UC.toInt, modes: CAM, size: 8}),
+            drillDown: UC.newInput("plunge per", { title: "max plunge between\ndwell periods\nin millimeters\n0 to disable", convert: UC.toFloat, modes: CAM, size: 8}),
+            drillDownSpeed: UC.newInput("plunge rate", { title: "plunge rate\nin millimeters / minute\n0 to disable", convert: UC.toFloat, modes: CAM, size: 8}),
+            drillDwell: UC.newInput("dwell time", { title: "dwell time\nbetween plunges in\nin milliseconds", convert: UC.toFloat, modes: CAM, size: 8}),
+            drillLift: UC.newInput("drill lift", { title: "lift between plunges\nafter dwell period\nin millimeters\n0 to disable", convert: UC.toFloat, modes: CAM, size: 8}),
 
             // cam tabs - group id = ck_cutout
-            camTabs: UC.newGroup("cutout tabs", null, {modes:CAM}),
-            camTabsWidth: UC.newInput("width", {title:"width in millimeters\nperpendicular to part", convert:UC.toFloat, bound:UC.bound(1,100), modes:CAM}),
-            camTabsHeight: UC.newInput("height", {title:"height in millimeters\nfrom part bottom", convert:UC.toFloat, bound:UC.bound(1,100), modes:CAM}),
-            camTabsOn: UC.newBoolean("enable", onBooleanClick, {title:"enable or disable tabs\ntab generation skipped when\npocket only mode enabled", modes:CAM}),
-
-            output: UC.newGroup("output"),
-            outputTileSpacing: UC.newInput("spacing", {title:"millimeters\ndistance between layer output", convert:UC.toInt, modes:LASER}),
-            outputTileScaling: UC.newInput("scaling", {title:"multiplier (0.1 to 100)", convert:UC.toInt, bound:UC.bound(0.1,100), modes:LASER}),
-            outputLaserPower: UC.newInput("power", {title:"0 - 100 %", convert:UC.toInt, bound:UC.bound(1,100), modes:LASER}),
-            outputLaserSpeed: UC.newInput("speed", {title:"millimeters / minute", convert:UC.toInt, modes:LASER}),
-
-            outputBedTemp: UC.newInput("bed temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
-            outputTemp: UC.newInput("nozzle temp", {title:"degrees celsius", convert:UC.toInt, modes:FDM}),
-            outputFeedrate: UC.newInput("print speed", {title:"print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
-            outputSeekrate: UC.newInput("move speed", {title:"non-print move max speed\nmillimeters / minute", convert:UC.toInt, modes:FDM}),
-            // outputShellSpeed: UC.newInput("shell speed", {title:"speed multiplier\n0.1 - 2.0", convert:UC.toFloat, bound:UC.bound(0.1,2.0), modes:FDM}),
-            outputShellMult: UC.newInput("shell factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
-            outputFillMult: UC.newInput("fill factor", {title:"extrusion multiplier\n0.0 - 2.0", convert:UC.toFloat, bound:UC.bound(0.0,2.0), modes:FDM}),
-
-            //
-            camTolerance: UC.newInput("tolerance", {title:"surface precision\nin millimeters", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:CAM}),
-            camZTopOffset: UC.newInput("z top offset", {title:"offset from stock surface\nto top face of part\nin millimeters", convert:UC.toFloat, modes:CAM}),
-            camZBottom: UC.newInput("z bottom", {title:"offset from part bottom\nto limit cutting depth\nin millimeters", convert:UC.toFloat, modes:CAM}),
-            camZClearance: UC.newInput("z clearance", {title:"travel offset from z top\nin millimeters", convert:UC.toFloat, bound:UC.bound(1,100), modes:CAM}),
-            camPocketOnly: UC.newBoolean("pocket only", onBooleanClick, {title:"constrain to\npart boundaries", modes:CAM}),
-            // camEaseDown: UC.newBoolean("ease down", onBooleanClick, {title:"rough plunge cuts\nwill spiral down", modes:CAM}),
-            camDepthFirst: UC.newBoolean("depth first", onBooleanClick, {title:"optimize pocket cuts\nwith depth priority", modes:CAM}),
-            outputClockwise: UC.newBoolean("clockwise", onBooleanClick, {title:"waterline milling direction", modes:CAM}),
-
-            // cam stock
-            camStock: UC.newGroup("stock", null, {modes:CAM}),
-            camStockX: UC.newInput("width", {title:"width in millimeters\n0 defaults to part size", convert:UC.toFloat, bound:UC.bound(0,9999), modes:CAM}),
-            camStockY: UC.newInput("depth", {title:"depth in millimeters\n0 defaults to part size", convert:UC.toFloat, bound:UC.bound(0,9999), modes:CAM}),
-            camStockZ: UC.newInput("height", {title:"depth in millimeters\n0 defaults to part size", convert:UC.toFloat, bound:UC.bound(0,9999), modes:CAM}),
-            outputOriginCenter: UC.newBoolean("origin center", onBooleanClick, {modes:CAM_LASER}),
-            camOriginTop: UC.newBoolean("origin top", onBooleanClick, {modes:CAM}),
+            camTabs: UC.newGroup("cutout tabs", null, { modes: CAM }, true, onBooleanClick),
+            camTabsWidth: UC.newInput("width", { title: "width in millimeters\nperpendicular to part", convert: UC.toFloat, bound: UC.bound(1, 100), modes: CAM, size: 8}),
+            camTabsHeight: UC.newInput("height", { title: "height in millimeters\nfrom part bottom", convert: UC.toFloat, bound: UC.bound(1, 100), modes: CAM, size: 8}),
 
             support: UC.newGroup("supports", null, {modes:FDM}),
             sliceSupportDensity: UC.newInput("density", {title:"0.0 - 1.0\nrecommended 0.15\n0 to disable", convert:UC.toFloat, bound:UC.bound(0.05,1.0), modes:FDM}),
@@ -2480,7 +2497,7 @@ self.kiri.license = exports.LICENSE;
                 return false;
             }
             switch (evt.charCode) {
-                case cca('`'): showSlices(0); break;
+                case cca(''): showSlices(0); break;
                 case cca('0'): showSlices(showLayerMax); break;
                 case cca('1'): // toggle control left
                     if (evt.ctrlKey) {
@@ -2645,7 +2662,8 @@ self.kiri.license = exports.LICENSE;
                 cp = s.process,
                 pl = s.sproc[mode],
                 pt = sf[mode.toLowerCase()].p, // process field mask
-                name = WIN.prompt("Save Settings As", cp ? cp.processName || def : def);
+                name = WIN.prompt("Save Settings As", cp ? cp.processName || def : def),
+                settingsLabel = DOC.querySelector('#ck_settings_label');
             if (!name) return;
             var np = pl[name] = {};
             cp.processName = name;
@@ -2656,7 +2674,8 @@ self.kiri.license = exports.LICENSE;
             }
             s.cproc[getMode()] = name;
             saveSettings();
-            triggerSettingsEvent();
+          triggerSettingsEvent();
+          settingsLabel.textContent = name;
         }
 
         function settingsLoad() {
@@ -2930,6 +2949,8 @@ self.kiri.license = exports.LICENSE;
                 tool.type === 'ballmill' ? 1 :
                 -1
             );
+            var toolLabel = DOC.querySelector('#button_Tool');
+            toolLabel.textContent = tool.name;
         }
 
         function updateTool() {
@@ -3118,7 +3139,7 @@ self.kiri.license = exports.LICENSE;
         UI.modeArrange.innerHTML = "<u>A</u>rrange";
         UI.modeSlice.innerHTML = "<u>S</u>lice";
         // UI.modePreview.innerHTML = "<u>P</u>review";
-        UI.modeExport.innerHTML = "E<u>x</u>port";
+        UI.modeExport.innerHTML = "Send >";
 
         UI.layerID.convert = UC.toFloat.bind(UI.layerID);
         UI.layerSpan.convert = UC.toFloat.bind(UI.layerSpan);
@@ -3140,9 +3161,9 @@ self.kiri.license = exports.LICENSE;
         $('z-').onclick = function(ev) { rotateSelection(0,0,ev.shiftKey ? ROT5 : ROT) };
         $('z+').onclick = function(ev) { rotateSelection(0,0,ev.shiftKey ? -ROT5 : -ROT) };
 
-        UI.viewModelOpacity.onchange = UI.viewModelOpacity.onclick = function(ev) {
-            setOpacity(parseInt(UI.viewModelOpacity.value)/100);
-        };
+        // UI.viewModelOpacity.onchange = UI.viewModelOpacity.onclick = function(ev) {
+        //     setOpacity(parseInt(UI.viewModelOpacity.value)/100);
+        // };
 
         UI.layerSlider.ondblclick = function() {
             UI.layerRange.checked = !UI.layerRange.checked;
@@ -3171,7 +3192,7 @@ self.kiri.license = exports.LICENSE;
         UI.toolMetric.onclick = updateTool;
         UI.toolType.onchange = updateTool;
 
-        $('kiri').onclick = showHelpLocal;
+        // $('kiri').onclick = showHelpLocal;
 
         SPACE.platform.setSize(
             settings.device.bedWidth,
@@ -3292,7 +3313,7 @@ self.kiri.license = exports.LICENSE;
             KIRI.serial.init();
 
             // place version number a couple of places to help users
-            UI.helpButton.title = "version " + KIRI.version;
+            // UI.helpButton.title = "version " + KIRI.version;
 
             // setup tab visibility watcher
             // DOC.addEventListener('visibilitychange', function() { document.title = document.hidden });

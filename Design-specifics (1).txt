@@ -1,0 +1,30 @@
+**Fonts**
+
+Titles and headers: Quattrocento Sans
+Settings and labels: Lato
+
+**Colour Palette**
+
+blue (buttons)
+#3e85c7
+rgb(62,133,199)
+
+blue (highlights)
+#195cac
+rgb(25,92,172)
+
+blue (boxes)
+#132f82
+rgb(819,47,130)
+
+blue (box background)
+#f0f9fd
+rgb(240,249,253)
+
+grey (buttons)
+#c2c2c2
+rgb(194,194,194)
+
+grey (toolbar)
+#47494d
+rgb(71,73,77)

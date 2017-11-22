@@ -5,24 +5,18 @@ input[type=range]::-moz-focus-outer {
     border: 0;
 }
 .dialog {
+    z-index: 999;
     display: none;
     color: white;
-    padding: 10px;
-    border: 1px solid rgba(255,255,255,0.75);
-    background-color: rgba(20,20,20,0.75);
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    padding: 8px;
+    border: 1px solid #132f82;
+    background-color: #f0f9fd;
     position: fixed;
-    top: 25px;
+    top: 65px;
     xleft: 25px;
 }
 .dialog span {
     padding: 2px 5px 2px 5px;
-    margin: 0 5px 5px 5px;
-    background-color: #333;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 1px solid #555;
     text-align: center;
 }
 .helper {
@@ -141,16 +135,12 @@ input[type=range]::-moz-focus-outer {
 }
 #print > div {
     border: 1px solid #888;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
     padding: 2px;
     margin: 6px 0 6px 0;
 }
-#print .print-sel:hover {
-    border: 1px solid yellow;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
+/* #print .print-sel:hover {
+  border: 1px solid yellow;
+} */
 #print table {
     width: 100%;
 }
@@ -216,15 +206,11 @@ input[type=range]::-moz-focus-outer {
 }
 #sender > div {
     border: 1px solid #888;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
     padding: 2px;
     margin: 6px 0 6px 0;
 }
 #sender .sender-sel:hover {
     border: 1px solid yellow;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 #sender table {
     width: 100%;
@@ -344,23 +330,21 @@ button.selected {
 #tools-body {
     height: 100%;
 }
+#tool-labels {
+  justify-content: center;
+}
 #tool-labels span {
-    width: 200px;
+    width: 150px;
     padding: 2px 5px 2px 5px;
-    margin: 0 5px 5px 5px;
-    background-color: #333;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 1px solid #555;
+    color: #132f82;
     text-align: center;
+    text-transform: uppercase;
 }
 #tool-cols > div {
-    width: 200px;
+    width: 150px;
     padding: 5px;
     margin: 5px;
     border: 1px solid #aaa;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 #tool-info > div {
     margin-top: 2px;
@@ -386,11 +370,16 @@ button.selected {
 #tools input:focus {
     background-color: #dee;
 }
+
+#tool-list {
+  background-color: #f8f8f8;
+}
+
 #tool-list > select {
     flex-grow: 1;
     width: 100%;
     height: 100%;
-    color: white;
+    color: #282828;
     border: 0;
     margin-bottom: 2px;
     padding-bottom: 2px;
@@ -398,9 +387,9 @@ button.selected {
     overflow-y: auto;
     outline: none;
 }
-#tool-list select::-webkit-scrollbar {
+/* #tool-list select::-webkit-scrollbar {
     display: none;
-}
+} */
 
 /** device dialog */
 
@@ -423,8 +412,6 @@ button.selected {
     padding: 2px 5px 2px 5px;
     margin: 0 5px 5px 5px;
     background-color: #333;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
     border: 1px solid #555;
     text-align: center;
 }
@@ -433,8 +420,6 @@ button.selected {
     padding: 5px;
     margin: 5px;
     border: 1px solid #aaa;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 #device-info > div {
     margin-top: 2px;
@@ -567,7 +552,7 @@ button[import="1"] {
     bottom: 30px;
     background-color: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.5);
-    border-radius: 3px;
+      -radius: 3px;
     padding: 6px;
     -webkit-transform: translate(-10px, 0);
     transform: translate(-10px, 0);
@@ -575,4 +560,134 @@ button[import="1"] {
 #layers label {
     text-align: left;
     color: rgba(0,0,0,0.85);
+}
+
+/************************************************************
+CAMLab Adjustments
+************************************************************/
+#selection {
+  bottom: 30px;
+}
+
+#selection span {
+  padding: 4px;
+  background-color: #3e85c7;
+}
+
+#selection label {
+  color: #f8f8f8;
+}
+
+#selection label.value {
+  color: #f8f8f8;
+}
+
+#selection input {
+  background-color: #ddd;
+}
+
+#selection button {
+  padding: 0 6px;
+}
+
+#layer-view {
+  bottom: 30px;
+}
+
+#layer-view span {
+  padding: 4px;
+  background-color: #3e85c7;
+}
+
+#layer-view label {
+  color: #f8f8f8;
+}
+
+#layer-view label.value {
+  color: #f8f8f8;
+}
+
+#layer-view input {
+  background-color: #ddd;
+}
+
+#layer-id {
+  border: 0;
+  background-color: transparent !important;
+  color: #f8f8f8;
+}
+
+#layer-slider::-webkit-slider-thumb {
+  /* -webkit-appearance: none; */
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+}
+
+#loading {
+  top: 60px;
+  background-color: #ddd;
+  color: #f8f8f8;
+}
+
+#progress {
+  position: relative;
+  width: 1%;
+  height: 100%;
+  background-color: #132f82;
+  text-align: left;
+}
+
+#progress>span {
+  color: white;
+  padding-left: 10px;
+}
+
+#layer-toggle-img {
+  margin-right: 3px;
+}
+
+/* #layer-range {
+  display: none;
+}
+
+#layer-span {
+  display: none;
+} */
+
+#print {
+  top: calc(50vh - 120px);
+  background-color: #f0f9fd;
+  border: 1px solid #132f82;
+  opacity: 0.9;
+}
+
+#print > * {
+  opacity: 1;
+}
+
+#print>div {
+  border: 0;
+  margin: 8px 0;
+}
+
+#print-title {
+  color: #132f82;
+}
+
+#print-info label {
+}
+
+#print-info label input {
+  background-color: #ddd;
+}
+
+#print-download {
+  padding: 8px 16px;
+  background-color: #3e85c7;
+  border: 0;
+  border-radius: 4px;
+  color: #f8f8f8;
 }

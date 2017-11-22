@@ -60,26 +60,52 @@ var gs_moto_ui = exports;
         return div;
     }
 
-    function newGroup(label, div, options) {
+    function newGroup(label, div, options, enabled, booleanFunction) {
         lastDiv = div || lastDiv;
-        return addCollapsableGroup(label, lastDiv, options);
+        return addCollapsableGroup(label, lastDiv, options, enabled, booleanFunction);
     }
 
-    function addCollapsableGroup(label, div, options) {
+    function addCollapsableGroup(label, div, options, enabled, booleanFunction) {
         var row = DOC.createElement('div'),
             a = DOC.createElement('a'),
             dbkey = prefix+'-show-'+label;
 
-        lastGroup = "ck_"+label;
+        lastGroup = "ck_"+label.split(' ').join('');
         div.appendChild(row);
-        row.setAttribute("class", "grouphead noselect");
+        row.setAttribute("class", "grouphead noselect groupLabel");
         row.setAttribute("id", lastGroup);
         row.appendChild(a);
+        if (enabled) {
+          const enabledInput = DOC.createElement('input');
+          enabledInput.setAttribute('type', 'checkbox');
+          enabledInput.setAttribute('class', 'enable-checkbox');
+          enabledInput.onclick = function(e) { 
+            booleanFunction();
+            toggleAnimation(e);
+          };
+          row.appendChild(enabledInput);
+        }
         a.appendChild(DOC.createTextNode(label));
         a.setAttribute("ck", lastGroup);
         a.setAttribute("id", lastGroup+"_label");
         addModeControls(row, options);
         return row;
+    }
+
+    function toggleAnimation(e) {
+      const children = e.target.parentNode.childNodes;
+      children.forEach(function(child) {
+        // don't hide the group header
+        if (child.nodeName === 'A') return;
+        if (child.classList.contains('enable-checkbox')) return;
+        if (e.target.checked) {
+          child.style.height = '100%';
+          child.style.visibility = 'visible';
+        } else {
+          child.style.height = '0';
+          child.style.visibility = 'hidden';
+        }
+      })
     }
 
     function toInt() {
@@ -107,8 +133,10 @@ var gs_moto_ui = exports;
     }
 
     function newLabel(text) {
-        var label = DOC.createElement('label');
+        var label = DOC.createElement('label'),
+            name = text.split(' ').join('');
         label.appendChild(DOC.createTextNode(text));
+        label.setAttribute("id", name);
         label.setAttribute("class", "noselect");
         return label;
     }
@@ -156,15 +184,19 @@ var gs_moto_ui = exports;
         return div;
     }
 
-    function newInputField(label, options, parentEl) {
-        parentEl = parentEl || null;
+    function newInputField(label, options) {
         var row = newDiv(options),
             hide = options && options.hide,
             size = options ? options.size || 5 : 5,
             height = options ? options.height : 0,
             ip = height > 1 ? DOC.createElement('textarea') : DOC.createElement('input'),
-            action = inputAction;
-        lastDiv.appendChild(row);
+            action = inputAction,
+            parentGroup = document.querySelector('#' + lastGroup);
+        if (parentGroup) {
+          parentGroup.appendChild(row);
+        } else {
+          lastDiv.appendChild(row);
+        }
         row.appendChild(newLabel(label));
         row.appendChild(ip);
         row.setAttribute("class", ["flow-row",lastGroup].join(" "));
@@ -194,12 +226,6 @@ var gs_moto_ui = exports;
         }
         if (!ip.convert) ip.convert = raw.bind(ip);
         ip.setVisible = row.setVisible;
-
-        // append to group by parentEl param
-        if (!parentEl === null) {
-            const parent = document.querySelector(parentEl)
-            parent.appendChild(row);
-        }
         return ip;
     }
 
@@ -207,8 +233,13 @@ var gs_moto_ui = exports;
         var row = newDiv(options),
             ip = DOC.createElement('input'),
             hide = options && options.hide,
-            action = inputAction;
-        lastDiv.appendChild(row);
+            action = inputAction,
+            parentGroup = document.querySelector('#' + lastGroup);
+        if (parentGroup) {
+          parentGroup.appendChild(row);
+        } else {
+          lastDiv.appendChild(row);
+        }
         if (label) row.appendChild(newLabel(label));
         row.appendChild(ip);
         row.setAttribute("class", ["flow-row",lastGroup].join(" "));
@@ -232,8 +263,13 @@ var gs_moto_ui = exports;
         var row = newDiv(options),
             ip = DOC.createElement('select'),
             hide = options && options.hide,
-            action = inputAction;
-        lastDiv.appendChild(row);
+            action = inputAction,
+            parentGroup = document.querySelector('#' + lastGroup);
+        if (parentGroup) {
+          parentGroup.appendChild(row);
+        } else {
+          lastDiv.appendChild(row);
+        }
         row.appendChild(newLabel(label));
         row.appendChild(ip);
         row.setAttribute("class", ["flow-row",lastGroup].join(" "));
@@ -252,8 +288,13 @@ var gs_moto_ui = exports;
     function newBooleanField(label, action, options) {
         var row = newDiv(options),
             ip = DOC.createElement('input'),
-            hide = options && options.hide;
-        lastDiv.appendChild(row);
+            hide = options && options.hide,
+            parentGroup = document.querySelector('#' + lastGroup);
+        if (parentGroup) {
+          parentGroup.appendChild(row);
+        } else {
+          lastDiv.appendChild(row);
+        }
         if (label) row.appendChild(newLabel(label));
         row.appendChild(ip);
         row.setAttribute("class", ["flow-row",lastGroup].join(" "));
@@ -274,8 +315,13 @@ var gs_moto_ui = exports;
 
     function newBlank(options) {
         var row = newDiv(options),
-            hide = options && options.hide;
-        lastDiv.appendChild(row);
+            hide = options && options.hide,
+            parentGroup = document.querySelector('#' + lastGroup);
+        if (parentGroup) {
+          parentGroup.appendChild(row);
+        } else {
+          lastDiv.appendChild(row);
+        }
         row.setAttribute("class", ["flow-row",lastGroup].join(" "));
         row.style.display = hide ? 'none' : '';
         ip.setVisible = row.setVisible;
@@ -286,6 +332,7 @@ var gs_moto_ui = exports;
         var b = DOC.createElement('button'),
             t = DOC.createTextNode(label);
         b.appendChild(t);
+        b.setAttribute('id', 'button_' + label.split(' ').join(''));
         b.onclick = function() { action() };
         addModeControls(b, options);
         addId(b, options);
